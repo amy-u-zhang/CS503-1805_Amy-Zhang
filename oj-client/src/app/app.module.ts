@@ -13,8 +13,8 @@ import { routing } from './app.routes'
     ProblemDetailComponent
   ],
   imports: [
-    BrowserModule
-    //routing
+    BrowserModule,
+    routing
   ],
   providers: [],
   bootstrap: [AppComponent]

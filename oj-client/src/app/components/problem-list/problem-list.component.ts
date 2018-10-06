@@ -11,21 +11,26 @@ import { DataService } from '../../services/data.service';
 export class ProblemListComponent implements OnInit {
   
   problems: Problem[];
-  problem: Problem;
+  //problem: Problem;
 
   constructor(private dataService: DataService) { }
 
   // initialize problems in this class
   ngOnInit() {
-    this.getProblems();
+    //this.getProblems();
+    this.problems = this.dataService.getProblems();
   }
 
+  /*
   getProblems() {
   	this.problems = this.dataService.getProblems();
   }
+  */
 
+  /*
   getProblem(id: number) {
   	this.problem = this.dataService.getProblem(id);
   }
+  */
 
 }
