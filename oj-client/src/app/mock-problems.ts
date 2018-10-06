@@ -1,4 +1,4 @@
-import { Problem } from '../model/problem.model';
+import { Problem } from './model/problem.model';
 
 export const PROBLEMS: Problem[] = [
 	{

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Problem } from '../../model/problem.model';
+import { Problem } from '../model/problem.model';
 import { PROBLEMS } from '../mock-problems';
 
 @Injectable({
