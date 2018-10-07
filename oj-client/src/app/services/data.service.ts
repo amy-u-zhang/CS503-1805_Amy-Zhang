@@ -26,7 +26,14 @@ export class DataService {
   	    return problem;
   	  }
   	}
+  }
 
+  // add a new problem
+  addProblem(problem: Problem) {
+    // assign problem id
+    problem.id = this.problems.length + 1;
+    // add to the end of problems list
+    this.problems.push(problem);
   }
 
 }

@@ -11,7 +11,6 @@ import { DataService } from '../../services/data.service';
 export class ProblemListComponent implements OnInit {
   
   problems: Problem[];
-  //problem: Problem;
 
   constructor(private dataService: DataService) { }
 
@@ -24,12 +23,6 @@ export class ProblemListComponent implements OnInit {
   /*
   getProblems() {
   	this.problems = this.dataService.getProblems();
-  }
-  */
-
-  /*
-  getProblem(id: number) {
-  	this.problem = this.dataService.getProblem(id);
   }
   */
 
