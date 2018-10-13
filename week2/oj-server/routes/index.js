@@ -4,9 +4,9 @@ const path = require('path');
 
 // if the url does not handled by router on the server side, then
 // the server send index.html from the public folder
-router.get('/', (req, res) => {
-	res.sendFile('index.html', { root: path.join(__dirname,
-		'../../public/')});
-});
+// router.get('/', (req, res) => {
+// 	res.sendFile('index.html', { root: path.join(__dirname,
+// 		'../../public/')});
+// });
 
-module.experts = router;
+//  module.experts = router;

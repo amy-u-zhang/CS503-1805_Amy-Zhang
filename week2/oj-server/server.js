@@ -10,7 +10,7 @@ mongoose.connect('mongodb://admin:admin123@ds129823.mlab.com:29823/mydb', {useNe
 
 
 const restRouter = require('./routes/rest');
-///const indexRouter = require('./routes/index');
+//const indexRouter = require('./routes/index');
 
 // app.get('/', (req, res) => {
 // 	res.send('hello world from express');
@@ -18,6 +18,8 @@ const restRouter = require('./routes/rest');
 
 app.use('/api/v1', restRouter);
 app.use(express.static(path.join(__dirname, '../public')));
+// if the url does not handled by router on the server side, then
+// the server send index.html from the public folder
 app.use((req, res) => {
 	res.sendFile('index.html', {root: path.join(__dirname, '../public')});
 });

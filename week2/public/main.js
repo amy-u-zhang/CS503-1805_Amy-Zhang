@@ -357,7 +357,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- *ngIf: only show the problem when problem is not null -->\n<div class=\"container\" *ngIf=\"problem\">\n\t<div class=\"col-sm-12 col-sd-4\">\n\t\t<div>\n\t\t\t<h2>\n\t\t\t\t{{problem.id}}. {{problem.name}}\n\t\t\t</h2>\n\t\t\t<p>\n\t\t\t\t{{problem.desc}}\n\t\t\t</p>\n\t\t</div>\n\t<div class=\"hidden-xs col-sm-12 col-md-8\">\n\t\t<app-editor></app-editor>\n\t</div>\n</div>\n"
+module.exports = "<!-- *ngIf: only show the problem when problem is not null -->\n<div class=\"container\" *ngIf=\"problem\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 col-sd-4\">\n\t\t\t<div>\n\t\t\t\t<h2>\n\t\t\t\t\t{{problem.id}}. {{problem.name}}\n\t\t\t\t</h2>\n\t\t\t\t<p>\n\t\t\t\t\t{{problem.desc}}\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"hidden-xs col-sm-12 col-md-8\">\n\t\t\t<app-editor></app-editor>\n\t\t</div>\n\t\t\n\t</div>\n</div>\n"
 
 /***/ }),
 
