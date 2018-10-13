@@ -72,7 +72,6 @@ const addProblem = function(newProblem) {
 	// 		newProblem.id = problems.length + 1;
 	// 		problems.push(newProblem);
 	// 		resolve(newProblem);
-
 	// 	}
 	// });
 	return new Promise((resolve, reject) => {

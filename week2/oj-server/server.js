@@ -5,7 +5,8 @@ const app = express();
 
 // connect to mongodb
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://mydbadmin:admin123@ds129823.mlab.com:29823/mydb', {useNewUrlParser: true});
+mongoose.connect('mongodb://admin:admin123@ds129823.mlab.com:29823/mydb', {useNewUrlParser: true});
+//mongoose.connect('mongodb://user:user@ds117858.mlab.com:17858/problems', {useNewUrlParser: true});
 
 
 const restRouter = require('./routes/rest');
