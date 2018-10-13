@@ -10,7 +10,7 @@ mongoose.connect('mongodb://admin:admin123@ds129823.mlab.com:29823/mydb', {useNe
 
 
 const restRouter = require('./routes/rest');
-const indexRouter = require('./routes/index');
+///const indexRouter = require('./routes/index');
 
 // app.get('/', (req, res) => {
 // 	res.send('hello world from express');
@@ -18,9 +18,9 @@ const indexRouter = require('./routes/index');
 
 app.use('/api/v1', restRouter);
 app.use(express.static(path.join(__dirname, '../public')));
-// app.use((req, res) => {
-// 	res.sendFile('index.html', {root: path.join(__dirname, '../public')});
-// });
+app.use((req, res) => {
+	res.sendFile('index.html', {root: path.join(__dirname, '../public')});
+});
 
 app.listen(3000, () => {
 	console.log('App is listening to port 3000!');
