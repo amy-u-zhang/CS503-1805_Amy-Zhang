@@ -9,6 +9,7 @@ import { ProblemDetailComponent } from './components/problem-detail/problem-deta
 import { NewProblemComponent } from './components/new-problem/new-problem.component';
 
 import { routing } from './app.routes';
+import { EditorComponent } from './components/editor/editor.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { routing } from './app.routes';
     AppComponent,
     ProblemListComponent,
     ProblemDetailComponent,
-    NewProblemComponent
+    NewProblemComponent,
+    EditorComponent
   ],
   imports: [
     BrowserModule,

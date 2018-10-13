@@ -13,9 +13,10 @@ router.get('/problems', (req, res) => {
 
 // get single problem
 router.get('/problems/:id', (req, res) => {
-	const id = req.params.id;
+	const id = req.params.id;  
 	problemService.getProblem(+id)
-	  .then(problem => res.json(problem));
+	  .then(problem => {res.json(problem)});
+	  
 });
 
 // add a problem

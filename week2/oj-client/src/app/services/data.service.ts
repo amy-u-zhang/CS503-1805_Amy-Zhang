@@ -42,7 +42,7 @@ export class DataService {
   	//     return problem;
   	//   }
   	// }
-    return this.httpClient.get(`api/vi/problems/${id}`)
+    return this.httpClient.get(`api/v1/problems/${id}`)
       .toPromise()
       .then((res: any) => res)  // same as ( return res)
       .catch(this.handleError);
@@ -57,7 +57,7 @@ export class DataService {
 
     // "content-Type" is case sensitive
     const options = { headers: new HttpHeaders({'Content-Type': 'application/json'})};
-    return this.httpClient.post('api/vi/problems', problem, options)
+    return this.httpClient.post('api/v1/problems', problem, options)
       .toPromise()
       .then((res: any) => {
         // any: type, 
