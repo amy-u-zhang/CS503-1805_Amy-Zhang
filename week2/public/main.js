@@ -204,7 +204,7 @@ module.exports = "@media screen {\n #editor {\n   height: 600px;\n }\n   .lang-s
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"editor\"></div>\n"
+module.exports = "<section>\n\t<header class=\"editor-header\">\n\t\t<div class=\"row\">\n\t\t\t<select class=\"form-control pull-left lang-select\" name=\"language\" [(ngModel)]=\"language\" (change)=\"setLanguage(language)\">\n\t\t\t\t<option *ngFor=\"let language of languages\" [value]=\"language\">\n\t\t\t\t\t{{language}}\n\t\t\t\t</option>\n\t\t\t</select>\n\t\t\t<!-- reset button -->\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#myModal\">\n\t\t\t\tReset\n\t\t\t</button>\n\n\t\t\t<!-- Modal -->\n\t\t\t<div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog\" role=\"document\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t\t\t<h5 class=\"modal-title\" id=\"exampleModalLabel\">Are you sure</h5>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">\n\t\t\t\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"resetEditor()\">Reset</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</header>\n\n\t<div id=\"editor\">\n\t</div> <!-- This is the body -->\n\n\t<footer class=\"editor-footer\">\n\t\t<button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"submit()\">Submit Solution</button>\n\t</footer>\n</section>\n"
 
 /***/ }),
 
@@ -231,6 +231,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var EditorComponent = /** @class */ (function () {
     function EditorComponent() {
+        this.languages = ['Java', 'Python'];
+        this.language = 'Java';
         this.defaultContent = {
             'Java': "public calss Example {\n  \t\t        public static void main(String[] args) {\n  \t\t        \t// Type your Java code here\n  \t\t        }\n  \t}\n  \t",
             'Python': "class Solution:\n  \t               def example():\n  \t                   # write your Python code here"
@@ -240,9 +242,19 @@ var EditorComponent = /** @class */ (function () {
         // "editor" is the id in html
         this.editor = ace.edit("editor");
         this.editor.setTheme("ace/theme/eclipse");
-        this.editor.getSession().setMode("ace/model/java");
+    };
+    EditorComponent.prototype.resetEditor = function () {
+        this.editor.getSession().setMode("ace/model/" + this.language.toLowerCase());
         // set the java
-        this.editor.setValue(this.defaultContent["Java"]);
+        this.editor.setValue(this.defaultContent[this.language]);
+    };
+    EditorComponent.prototype.setLanguage = function (language) {
+        this.language = language;
+        this.resetEditor();
+    };
+    EditorComponent.prototype.submit = function () {
+        var usercode = this.editor.getValue();
+        console.log(usercode);
     };
     EditorComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -357,7 +369,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- *ngIf: only show the problem when problem is not null -->\n<div class=\"container\" *ngIf=\"problem\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 col-sd-4\">\n\t\t\t<div>\n\t\t\t\t<h2>\n\t\t\t\t\t{{problem.id}}. {{problem.name}}\n\t\t\t\t</h2>\n\t\t\t\t<p>\n\t\t\t\t\t{{problem.desc}}\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"hidden-xs col-sm-12 col-md-8\">\n\t\t\t<app-editor></app-editor>\n\t\t</div>\n\t\t\n\t</div>\n</div>\n"
+module.exports = "<!-- *ngIf: only show the problem when problem is not null -->\n<div class=\"container\" *ngIf=\"problem\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 col-md-4\">\n\t\t\t<div>\n\t\t\t\t<h2>\n\t\t\t\t\t{{problem.id}}. {{problem.name}}\n\t\t\t\t</h2>\n\t\t\t\t<p>\n\t\t\t\t\t{{problem.desc}}\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"hidden-xs col-sm-12 col-md-8\">\n\t\t\t<app-editor></app-editor>\n\t\t</div>\n\t\t\n\t</div>\n</div>\n"
 
 /***/ }),
 

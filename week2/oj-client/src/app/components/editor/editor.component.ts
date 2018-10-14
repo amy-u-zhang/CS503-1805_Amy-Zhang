@@ -9,6 +9,9 @@ declare var ace: any;
 })
 export class EditorComponent implements OnInit {
   editor: any;
+  public languages: string[] = ['Java', 'Python'];
+  language: string = 'Java';
+
   defaultContent = {
   	'Java': `public calss Example {
   		        public static void main(String[] args) {
@@ -27,9 +30,22 @@ export class EditorComponent implements OnInit {
   	// "editor" is the id in html
   	this.editor = ace.edit("editor");
   	this.editor.setTheme("ace/theme/eclipse");
-  	this.editor.getSession().setMode("ace/model/java");
-  	// set the java
-  	this.editor.setValue(this.defaultContent["Java"]);
+  }
+
+  resetEditor(): void {
+    this.editor.getSession().setMode("ace/model/" + this.language.toLowerCase());
+    // set the java
+    this.editor.setValue(this.defaultContent[this.language]);
+  }
+
+  setLanguage(language: string): void {
+    this.language = language;
+    this.resetEditor();
+  }
+
+  submit(): void {
+    let usercode = this.editor.getValue();
+    console.log(usercode);
   }
 
 }
