@@ -219,6 +219,7 @@ module.exports = "<section>\n\t<header class=\"editor-header\">\n\t\t<div class=
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditorComponent", function() { return EditorComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/collaboration.service */ "./src/app/services/collaboration.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -229,22 +230,27 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent() {
+    // inject CollaborationService
+    function EditorComponent(collaboration) {
+        this.collaboration = collaboration;
         this.languages = ['Java', 'Python'];
         this.language = 'Java';
         this.defaultContent = {
-            'Java': "public calss Example {\n  \t\t        public static void main(String[] args) {\n  \t\t        \t// Type your Java code here\n  \t\t        }\n  \t}\n  \t",
+            'Java': "public class Example {\n  \t\t        public static void main(String[] args) {\n  \t\t        \t// Type your Java code here\n  \t\t        }\n  \t}\n  \t",
             'Python': "class Solution:\n  \t               def example():\n  \t                   # write your Python code here"
         }; //use `` to write multi-line text
     }
     EditorComponent.prototype.ngOnInit = function () {
+        // init collaboration service
+        this.collaboration.init();
         // "editor" is the id in html
         this.editor = ace.edit("editor");
         this.editor.setTheme("ace/theme/eclipse");
     };
     EditorComponent.prototype.resetEditor = function () {
-        this.editor.getSession().setMode("ace/model/" + this.language.toLowerCase());
+        this.editor.getSession().setMode("ace/mode/" + this.language.toLowerCase());
         // set the java
         this.editor.setValue(this.defaultContent[this.language]);
     };
@@ -262,7 +268,7 @@ var EditorComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./editor.component.html */ "./src/app/components/editor/editor.component.html"),
             styles: [__webpack_require__(/*! ./editor.component.css */ "./src/app/components/editor/editor.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__["CollaborationService"]])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -503,6 +509,57 @@ var ProblemListComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_services_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"]])
     ], ProblemListComponent);
     return ProblemListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/collaboration.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/services/collaboration.service.ts ***!
+  \***************************************************/
+/*! exports provided: CollaborationService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CollaborationService", function() { return CollaborationService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var CollaborationService = /** @class */ (function () {
+    function CollaborationService() {
+    }
+    CollaborationService.prototype.init = function () {
+        // window.location.origin: the server location on the current page
+        // for example, the current page on the browser is 
+        // "localhost:3000/problems/1", the window.location.origin =
+        // "http://localhost:3000"
+        this.collaborationSocket = io(window.location.origin, {
+            query: 'message=haha'
+        });
+        // wait for 'message' event
+        // when receive the message, for now just print the message
+        this.collaborationSocket.on("message", function (message) {
+            console.log('message received from the server: ' + message);
+        });
+    };
+    CollaborationService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [])
+    ], CollaborationService);
+    return CollaborationService;
 }());
 
 
