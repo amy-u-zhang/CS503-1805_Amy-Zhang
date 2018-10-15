@@ -220,6 +220,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditorComponent", function() { return EditorComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/collaboration.service */ "./src/app/services/collaboration.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -231,10 +232,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var EditorComponent = /** @class */ (function () {
     // inject CollaborationService
-    function EditorComponent(collaboration) {
+    function EditorComponent(collaboration, route) {
         this.collaboration = collaboration;
+        this.route = route;
         this.languages = ['Java', 'Python'];
         this.language = 'Java';
         this.defaultContent = {
@@ -243,11 +246,38 @@ var EditorComponent = /** @class */ (function () {
         }; //use `` to write multi-line text
     }
     EditorComponent.prototype.ngOnInit = function () {
-        // init collaboration service
-        this.collaboration.init();
-        // "editor" is the id in html
+        //  // init collaboration service
+        //  this.collaboration.init();
+        // // "editor" is the id in html
+        // this.editor = ace.edit("editor");
+        // this.editor.setTheme("ace/theme/eclipse");
+        var _this = this;
+        //use problem id as session id
+        // since we subscribe the changes, every time the params changes
+        // sessionId will be updated and editor will be initilized
+        this.route.params.subscribe(function (params) {
+            _this.sessionId = params['id'];
+            _this.initEditor();
+        });
+    };
+    EditorComponent.prototype.initEditor = function () {
+        var _this = this;
         this.editor = ace.edit("editor");
-        this.editor.setTheme("ace/theme/eclipse");
+        this.editor.setTheme("ace/theme/eclipes");
+        this.resetEditor();
+        document.getElementsByTagName('textarea')[0].focus();
+        // set up collaboration socket
+        this.collaboration.init(this.editor, this.sessionId);
+        this.editor.lastAppliedChange = null;
+        // register change callback
+        this.editor.on("change", function (e) {
+            console.log('editor changes: ' + JSON.stringify(e));
+            // check if the change is same as last change,
+            // if they are the same, skip this change
+            if (_this.editor.lastAppliedChange != e) {
+                _this.collaboration.change(JSON.stringify(e));
+            }
+        });
     };
     EditorComponent.prototype.resetEditor = function () {
         this.editor.getSession().setMode("ace/mode/" + this.language.toLowerCase());
@@ -268,7 +298,8 @@ var EditorComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./editor.component.html */ "./src/app/components/editor/editor.component.html"),
             styles: [__webpack_require__(/*! ./editor.component.css */ "./src/app/components/editor/editor.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__["CollaborationService"]])
+        __metadata("design:paramtypes", [_services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__["CollaborationService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -539,19 +570,28 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var CollaborationService = /** @class */ (function () {
     function CollaborationService() {
     }
-    CollaborationService.prototype.init = function () {
+    CollaborationService.prototype.init = function (editor, sessionId) {
         // window.location.origin: the server location on the current page
         // for example, the current page on the browser is 
         // "localhost:3000/problems/1", the window.location.origin =
         // "http://localhost:3000"
         this.collaborationSocket = io(window.location.origin, {
-            query: 'message=haha'
+            query: 'sessionId=' + sessionId
         });
-        // wait for 'message' event
-        // when receive the message, for now just print the message
-        this.collaborationSocket.on("message", function (message) {
-            console.log('message received from the server: ' + message);
+        /// wait for 'message' event
+        /// when receive the message, for now just print the message
+        // handle the changes send from server
+        this.collaborationSocket.on('change', function (delta) {
+            console.log('collabration: editor changes ' + delta);
+            delta = JSON.parse(delta); // delta is in josn format
+            editor.lastAppliedChange = delta;
+            editor.getSession().getDocument().applyDeltas([delta]);
         });
+    };
+    // emit event to make changes and inform server and other collaborators
+    CollaborationService.prototype.change = function (delta) {
+        // emit "change" event
+        this.collaborationSocket.emit("change", delta);
     };
     CollaborationService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({

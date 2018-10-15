@@ -30,14 +30,14 @@ export class EditorComponent implements OnInit {
 
   // inject CollaborationService
   constructor(private collaboration: CollaborationService,
-                private route: ActivatedRoute { }
+                private route: ActivatedRoute) { }
 
   ngOnInit() {
-    // init collaboration service
-    this.collaboration.init();
-  	// "editor" is the id in html
-  	this.editor = ace.edit("editor");
-  	this.editor.setTheme("ace/theme/eclipse");
+   //  // init collaboration service
+   //  this.collaboration.init();
+  	// // "editor" is the id in html
+  	// this.editor = ace.edit("editor");
+  	// this.editor.setTheme("ace/theme/eclipse");
 
     //use problem id as session id
     // since we subscribe the changes, every time the params changes
@@ -55,7 +55,7 @@ export class EditorComponent implements OnInit {
     document.getElementsByTagName('textarea')[0].focus();
 
     // set up collaboration socket
-    this.collaboration.init(this.editor, this.sesssionId);
+    this.collaboration.init(this.editor, this.sessionId);
 
     this.editor.lastAppliedChange = null;
 
