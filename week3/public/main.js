@@ -204,7 +204,7 @@ module.exports = "@media screen {\n #editor {\n   height: 600px;\n }\n   .lang-s
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<section>\n\t<header class=\"editor-header\">\n\t\t<div class=\"row\">\n\t\t\t<select class=\"form-control pull-left lang-select\" name=\"language\" [(ngModel)]=\"language\" (change)=\"setLanguage(language)\">\n\t\t\t\t<option *ngFor=\"let language of languages\" [value]=\"language\">\n\t\t\t\t\t{{language}}\n\t\t\t\t</option>\n\t\t\t</select>\n\t\t\t<!-- reset button -->\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#myModal\">\n\t\t\t\tReset\n\t\t\t</button>\n\n\t\t\t<!-- Modal -->\n\t\t\t<div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog\" role=\"document\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t\t\t<h5 class=\"modal-title\" id=\"exampleModalLabel\">Are you sure</h5>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">\n\t\t\t\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"resetEditor()\">Reset</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</header>\n\n\t<div id=\"editor\">\n\t</div> <!-- This is the body -->\n\n\t<footer class=\"editor-footer\">\n\t\t<button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"submit()\">Submit Solution</button>\n\t</footer>\n</section>\n"
+module.exports = "<section>\n\t<header class=\"editor-header\">\n\t\t<div class=\"row\">\n\t\t\t<select class=\"form-control pull-left lang-select\" name=\"language\" [(ngModel)]=\"language\" (change)=\"setLanguage(language)\">\n\t\t\t\t<option *ngFor=\"let language of languages\" [value]=\"language\">\n\t\t\t\t\t{{language}}\n\t\t\t\t</option>\n\t\t\t</select>\n\t\t\t<!-- reset button -->\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#myModal\">\n\t\t\t\tReset\n\t\t\t</button>\n\n\t\t\t<!-- Modal -->\n\t\t\t<div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog\" role=\"document\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t\t\t<h5 class=\"modal-title\" id=\"exampleModalLabel\">Are you sure</h5>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">\n\t\t\t\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"resetEditor()\">Reset</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</header>\n\n\t<div id=\"editor\">\n\t</div> <!-- This is the body -->\n\n\t<div>\n\t\t{{output}}\n\t</div>\n\n\t<footer class=\"editor-footer\">\n\t\t<button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"submit()\">Submit Solution</button>\n\t</footer>\n</section>\n"
 
 /***/ }),
 
@@ -221,6 +221,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/collaboration.service */ "./src/app/services/collaboration.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_data_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/data.service */ "./src/app/services/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -233,13 +234,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+// we must declare ace, since ace is not wroten by typescript, use type any
+
 var EditorComponent = /** @class */ (function () {
     // inject CollaborationService
-    function EditorComponent(collaboration, route) {
+    function EditorComponent(collaboration, route, dataService) {
         this.collaboration = collaboration;
         this.route = route;
+        this.dataService = dataService;
         this.languages = ['Java', 'Python'];
         this.language = 'Java';
+        this.output = '';
         this.defaultContent = {
             'Java': "public class Example {\n  \t\t        public static void main(String[] args) {\n  \t\t        \t// Type your Java code here\n  \t\t        }\n  \t}\n  \t",
             'Python': "class Solution:\n  \t               def example():\n  \t                   # write your Python code here"
@@ -291,8 +296,14 @@ var EditorComponent = /** @class */ (function () {
         this.resetEditor();
     };
     EditorComponent.prototype.submit = function () {
+        var _this = this;
         var usercode = this.editor.getValue();
         console.log(usercode);
+        var data = {
+            code: usercode,
+            lang: this.language.toLowerCase()
+        };
+        this.dataService.buildAndRun(data).then(function (res) { return _this.output = res; });
     };
     EditorComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -301,7 +312,8 @@ var EditorComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./editor.component.css */ "./src/app/components/editor/editor.component.css")]
         }),
         __metadata("design:paramtypes", [_services_collaboration_service__WEBPACK_IMPORTED_MODULE_1__["CollaborationService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _services_data_service__WEBPACK_IMPORTED_MODULE_3__["DataService"]])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -692,6 +704,17 @@ var DataService = /** @class */ (function () {
             // any: type, 
             // update the _problemSource
             _this.getProblems();
+            return res;
+        })
+            .catch(this.handleError);
+    };
+    // build and run the code user submitted
+    DataService.prototype.buildAndRun = function (data) {
+        var options = { headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({ 'Content-Type': 'application/json' }) };
+        return this.httpClient.post('api/v1/build_and_run', data, options)
+            .toPromise()
+            .then(function (res) {
+            console.log(res);
             return res;
         })
             .catch(this.handleError);

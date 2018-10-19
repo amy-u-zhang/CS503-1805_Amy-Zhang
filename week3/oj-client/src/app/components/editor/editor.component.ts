@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CollaborationService} from '../../services/collaboration.service';
 import { ActivatedRoute, Params } from '@angular/router';
 // we must declare ace, since ace is not wroten by typescript, use type any
+import { DataService } from '../../services/data.service';
+
 declare var ace: any;
 
 @Component({
@@ -13,6 +15,7 @@ export class EditorComponent implements OnInit {
   editor: any;
   public languages: string[] = ['Java', 'Python'];
   language: string = 'Java';
+  output: string = '';
 
   defaultContent = {
   	'Java': `public class Example {
@@ -30,7 +33,8 @@ export class EditorComponent implements OnInit {
 
   // inject CollaborationService
   constructor(private collaboration: CollaborationService,
-                private route: ActivatedRoute) { }
+                private route: ActivatedRoute,
+                private dataService: DataService) { }
 
   ngOnInit() {
    //  // init collaboration service
@@ -87,6 +91,13 @@ export class EditorComponent implements OnInit {
   submit(): void {
     let usercode = this.editor.getValue();
     console.log(usercode);
+
+    const data = {
+      code: usercode,
+      lang: this.language.toLowerCase()
+    }
+
+    this.dataService.buildAndRun(data).then(res => this.output = res);
   }
 
 }
