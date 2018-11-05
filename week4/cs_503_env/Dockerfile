@@ -8,4 +8,4 @@ COPY ./data-consumer.py /
 COPY ./requirements.txt /
 RUN pip3 install -r requirements.txt
 
-CMD python3 data-producer.py BTC-USD test kafka:9092
+CMD python3 data-producer.py BTC-USD test 172.17.0.3:9092

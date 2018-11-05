@@ -42,7 +42,7 @@ def fetch_price(symbol, producer, topic_name):
 
 		logger.debug('Retrieved %s info %s', symbol, payload)
 
-		producer.send(topic=topic_name, value=json.dumps(payload), timestamp_ms=int(time.time()*1000))
+		producer.send(topic=topic_name, value=json.dumps(payload).encode('utf-8'), timestamp_ms=int(time.time()*1000))
 		logger.debug('Sent price for %s to Kafka' % symbol)
 	except KafkaTimeoutError as timeout_error:
 		logger.warn('Failed to send price to kafka, caused by: %s',
