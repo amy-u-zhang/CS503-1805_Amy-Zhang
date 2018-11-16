@@ -7,7 +7,7 @@ import logging
 from kafka import KafkaConsumer
 
 logger_format = '%(asctime)-15s %(message)s'
-logging.basicConfig(form=logger_format)
+logging.basicConfig(format=logger_format)
 logger = logging.getLogger('data-storage')
 logger.setLevel(logging.DEBUG)
 

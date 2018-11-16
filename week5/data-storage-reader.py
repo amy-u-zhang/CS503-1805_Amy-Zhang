@@ -8,7 +8,7 @@ import time
 from kafka import KafkaProducer
 
 logger_format = '%(asctime)-15s %(message)s'
-logging.basicConfig(form=logger_format)
+logging.basicConfig(format=logger_format)
 logger = logging.getLogger('data-storage')
 logger.setLevel(logging.DEBUG)
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('topic_name', help='the kafka topic to subscribe from.')
 	parser.add_argument('kafka_broker', help='the location of the kafka broker.')
-	parser.add_argument('data_table', helpe='the data table to use.')
+	parser.add_argument('data_table', help='the data table to use.')
 	parser.add_argument('hbase_host', help='the host name of hbase.')
 
 	# Parse arguments
@@ -64,8 +64,8 @@ if __name__ == '__main__':
 
 	for key, data in table.scan():
 		payload = {'Symbol': data[b'family:symbol'].decode(), 
-		           'LastTradePrice': data[b'family:trade_price'].decode(),
-		           'Timestamp': data[b'family:trade_time'].decode()
+		           'LastTradePrice': data[b'family:price'].decode(),
+		           'Timestamp': data[b'family:timestamp'].decode()
 		}
 		logger.debug('Read data from hbase: %s', payload)
 		kafka_producer.send(topic_name, value=json.dumps(payload).encode('utf-8'))
