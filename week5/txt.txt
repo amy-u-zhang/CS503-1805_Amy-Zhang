@@ -25,3 +25,22 @@ docker run -d -h myhbase -p 2181:2181 -p 8080:8080 -p 8085:8085 -p 9090:9090 -p 
 
 # start a Kafka Container
 docker run -d -p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=localhost -e KAFKA_ADVERTISED_PORT=9092 --link hbase:zookeeper confluent/kafka
+
+# start producer
+python3 data-producer.py BTC-USD analyzer 127.0.0.1:9092
+
+# start hbase writer
+python3 data-storage-writer.py analyzer 127.0.0.1:9092 cryptocurrency myhbase
+
+# check table cryptocurrency in hbase
+hbase shell
+list
+describe 'cryptocurrency'
+scan 'cryptocurrency'
+
+# start hbase reader
+python3 data-storage-reader.py analyzer 127.0.0.1:9092 cryptocurrency myhbase
+
+# start consumer to consumer data from kafka where stores the data from hbase reader
+python3 data-consumer.py analyzer 127.0.0.1:9092
+
