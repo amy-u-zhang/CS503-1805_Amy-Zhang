@@ -10,7 +10,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
-logger_format = '%(asctime)-15s %(message)s'
+logger_format = '%(asctime)s %(message)s'
 logging.basicConfig(format=logger_format)
 logger = logging.getLogger('data-stream')
 logger.setLevel(logging.DEBUG)
@@ -32,7 +32,6 @@ def process_stream(stream, kafka_producer, target_topic):
 		results = rdd.collect()
 		logger.info('results=%s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', results)
 		for r in results:
-			logger.info('printing r = %s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', r)
 			data = json.dumps({
 					'Symbol': r[0],
 					'Timestamp': time.time(),
@@ -68,23 +67,18 @@ if __name__ == '__main__':
 
 	# Create SparkContext and SparkStreamingContext
 	sc = SparkContext('local[2]', 'AveragePrice')
-	#logger.info('Created SparkContext !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 	sc.setLogLevel('INFO')
 	ssc = StreamingContext(sc, batch_duration)
-	#logger.info('Created StreamingContext !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
 	# Instantiate a Kafka stream for processing.
-	#logger.info('Starting kafka stream !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 	directKafkaStream = KafkaUtils.createDirectStream(ssc, [source_topic], {'metadata.broker.list': kafka_broker})
 
 	# Extract value
 	stream = directKafkaStream.map(lambda msg:msg[1])
 
 	# Instantiate a simple Kafka producer.
-	#logger.info('Starting kafka producer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 	kafka_producer = KafkaProducer(bootstrap_servers=kafka_broker)
 
-	logger.info('Starting process_stream!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 	process_stream(stream, kafka_producer, target_topic)
 
 	# Setup shutdown hook

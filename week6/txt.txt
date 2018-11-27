@@ -44,5 +44,13 @@ python3 data-storage-reader.py analyzer 127.0.0.1:9092 cryptocurrency myhbase
 # start consumer to consumer data from kafka where stores the data from hbase reader
 python3 data-consumer.py analyzer 127.0.0.1:9092
 
-# get spark-streaming-kafka-0-8-assembly_2.11-2.0.0.jar
-spark-submit --jars spark-streaming-kafka-0-8-assembly_2.11-2.0.0.jar data-stream.py analyzer average-price 127.0.0.1:9092 5
+----------------------------------------------------------------
+# run data-producer 
+python3 data-producer.py BTC-USD analyzer 127.0.0.1:9092
+
+# get spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar
+spark-submit --jars spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar data-stream.py analyzer average-price 127.0.0.1:9092 5
+
+# start consumer to consumer data from spark
+python3 data-consumer.py average-price 127.0.0.1:9092
+
