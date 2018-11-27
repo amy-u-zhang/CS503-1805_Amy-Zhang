@@ -54,3 +54,8 @@ spark-submit --jars spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar data-strea
 # start consumer to consumer data from spark
 python3 data-consumer.py average-price 127.0.0.1:9092
 
+# start redis publisher
+python3 redis-publisher.py analyzer 127.0.0.1:9092 price 127.0.0.1 6379
+
+# check in redis-cli, should be able to read from redis channel
+subscribe price
